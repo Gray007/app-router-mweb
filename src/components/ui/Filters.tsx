@@ -1,5 +1,9 @@
 import React, { useState } from "react";
 
+interface FiltersProps {
+  selectedPriceRanges: PriceRange[];
+  setSelectedPriceRanges: React.Dispatch<React.SetStateAction<PriceRange[]>>;
+}
 interface PriceRange {
   min: number;
   max: number;
@@ -12,15 +16,18 @@ const priceRanges: PriceRange[] = [
   { min: 1000, max: 9999, label: "R1000+" },
 ];
 
-const Filters: React.FC = ({ selectedPriceRanges, setSelectedPriceRanges }) => {
+const Filters: React.FC<FiltersProps> = ({
+  selectedPriceRanges,
+  setSelectedPriceRanges,
+}) => {
   const handleRangeSelection = (range: PriceRange) => {
-    setSelectedPriceRanges((prevSelection) => {
+    setSelectedPriceRanges((prevSelection: PriceRange[]) => {
       const isSelected = prevSelection.some(
-        (selectedRange) => selectedRange.label === range.label
+        (selectedRange: PriceRange) => selectedRange.label === range.label
       );
       if (isSelected) {
         return prevSelection.filter(
-          (selectedRange) => selectedRange.label !== range.label
+          (selectedRange: PriceRange) => selectedRange.label !== range.label
         );
       } else {
         return [...prevSelection, range];
@@ -33,17 +40,16 @@ const Filters: React.FC = ({ selectedPriceRanges, setSelectedPriceRanges }) => {
   };
 
   return (
-    <div className="flex justify-center gap-4 p-4">
+    <div className="flex gap-4 justify-center sm:justify-start p-4">
       <div className="relative">
         <details className="group [&_summary::-webkit-details-marker]:hidden">
-          <summary className="flex cursor-pointer items-center gap-2 rounded-full bg-gradient-to-r from-pink-500 via-red-500 to-blue-500 p-[2px] hover:text-white focus:outline-none focus:ring active:text-opacity-75">
-            <span className="block rounded-full bg-black px-8 py-3 text-sm font-medium hover:bg-transparent">
-              {" "}
-              Price{" "}
+          <summary className="flex cursor-pointer items-center gap-2 rounded-lg bg-gradient-to-r from-pink-500 via-red-500 to-blue-500 p-[2px] hover:text-white focus:outline-none focus:ring active:text-opacity-75">
+            <span className="block rounded-lg bg-black px-8 py-3 text-sm font-medium hover:bg-transparent">
+              Price
             </span>
           </summary>
           <div className="z-50 group-open:absolute group-open:start-0 group-open:top-auto group-open:mt-2">
-            <div className="w-96 rounded border border-gray-200 bg-white">
+            <div className=" w-40 sm:w-96 rounded border border-gray-200 bg-white">
               <header className="flex items-center justify-between p-4">
                 <span className="text-sm text-gray-700">
                   {selectedPriceRanges.length} Selected
@@ -68,7 +74,8 @@ const Filters: React.FC = ({ selectedPriceRanges, setSelectedPriceRanges }) => {
                         id={range.label}
                         className="h-5 w-5 rounded border-gray-300"
                         checked={selectedPriceRanges.some(
-                          (selectedRange) => selectedRange.label === range.label
+                          (selectedRange: PriceRange) =>
+                            selectedRange.label === range.label
                         )}
                         onChange={() => handleRangeSelection(range)}
                       />
@@ -83,6 +90,11 @@ const Filters: React.FC = ({ selectedPriceRanges, setSelectedPriceRanges }) => {
           </div>
         </details>
       </div>
+      <summary className="flex cursor-pointer items-center gap-2 rounded-lg bg-gradient-to-r from-pink-500 via-red-500 to-blue-500 p-[2px] hover:text-white focus:outline-none focus:ring active:text-opacity-75">
+        <span className="block rounded-lg bg-black px-8 py-3 text-sm font-medium hover:bg-transparent">
+          Speed
+        </span>
+      </summary>
     </div>
   );
 };

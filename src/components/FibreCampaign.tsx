@@ -6,6 +6,7 @@ import PromoSelect from "./PromoSelect";
 import ProviderToggle from "./ui/ProviderToggle";
 import Filters from "./ui/Filters";
 import ProductCard from "./ui/ProductCard";
+import FibreProviders from "./FibreProviders";
 
 export const logoBaseURL = "https://www.mweb.co.za/media/images/providers";
 
@@ -211,37 +212,57 @@ const FibreCampaign: FC<FibreCampaignProps> = ({ campaigns }) => {
     );
     setSelectedProducts(filteredProducts);
   }, [selectedPriceRanges, checkedProviders]);
+
   return (
-    <div>
-      <div className="flex flex-col lg:flex-row gap-4 p-6">
-        <div className="">
-          <Filters
-            selectedPriceRanges={selectedPriceRanges}
-            setSelectedPriceRanges={setSelectedPriceRanges}
-          />
-          <PromoSelect
-            setPromocodesSelected={setPromocodesSelected}
-            campaigns={campaigns}
-          />
-        </div>
-        <div>
+    <div className="flex flex-col bg-gradient-to-b from-cyan-500 to-cyan-950">
+      <section className="w-full mx-auto bg-gray-900 sm:gap-4 text-center text-white">
+        <div className="max-w-screen-xl px-4 py-8 mx-auto sm:py-12 sm:px-6 lg:py-16 lg:px-8">
+          <div className="max-w-xl mx-auto">
+            <h2 className="text-3xl font-bold sm:text-4xl">Fibre products</h2>
+
+            <p className="mt-4 pb-2 sm:pb-4 text-gray-300">
+              Select a Fibre infrastructure provider below, browse the products
+              available and complete a coverage search
+            </p>
+          </div>
           <ProviderToggle
             providers={providersWithInfo}
             setCheckedProviders={setCheckedProviders}
             checkedProviders={checkedProviders}
           />
         </div>
+      </section>
+      <div className="flex flex-col text-center mx-auto sm:rounded-xl bg-black p-2 sm:p-8 sm:my-12">
+        <h2 className="text-2xl p-2 sm:pb-4 font-bold sm:text-3xl">Current promotions</h2>
+        <PromoSelect
+          setPromocodesSelected={setPromocodesSelected}
+          campaigns={campaigns}
+        />
       </div>
-      <div className="flex flex-wrap gap-2 sm:gap-4 justify-center">
-        {selectedProducts.map((product: Product) => (
-          <ProductCard
-            key={product.productCode}
-            subcategory={product.provider}
-            productName={product.productName}
-            productRate={product.productRate}
+
+      {/* <div className="bg-hero-pattern bg-cover bg-repeat py-8 px-4 sm:px-6 lg:px-8"> */}
+      <div className=" pb-8 px-4 bg-black sm:px-6 lg:px-8 sm:rounded-t-xl">
+        <div className="max-w-7xl mx-auto">
+          <Filters
+            selectedPriceRanges={selectedPriceRanges}
+            setSelectedPriceRanges={setSelectedPriceRanges}
           />
-        ))}
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
+            {selectedProducts.map((product: Product, index) => (
+              <div key={product.productCode + index} className="w-full h-full">
+                <ProductCard
+                  productCode={product.productCode}
+                  subcategory={product.provider}
+                  productName={product.productName}
+                  productRate={product.productRate}
+                />
+              </div>
+            ))}
+          </div>
+        </div>
       </div>
+
+      <div className="flex flex-wrap gap-2 sm:gap-4 justify-center"></div>
     </div>
   );
 };
